@@ -1549,8 +1549,9 @@ function beginBattle(shapeIndexes) {
   if (!shapeIndexes || shapeIndexes.length === 0) return;
   activeShapeIndexes = Array.from(shapeIndexes);
   const combinedPool = getCombinedPool();
+  const totalQuestions = combinedPool.length;
   currentPlanetIndex = activeShapeIndexes[Math.floor(Math.random() * activeShapeIndexes.length)];
-  bossMaxLife = Math.max(MAX_LIFE, combinedPool.length * DAMAGE);
+  bossMaxLife = totalQuestions > 0 ? totalQuestions * DAMAGE : DAMAGE;
   bossLife = bossMaxLife;
   player.life = player.maxLife;
   heroInjured = 0;
