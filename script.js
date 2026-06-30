@@ -607,6 +607,18 @@ function drawShape(type) {
     shapeCtx.lineTo(cx + 22, cy - 20);
     shapeCtx.lineTo(cx - 16, cy - 20);
     shapeCtx.closePath();
+  } else if (type === "rightTrapezoid") {
+    shapeCtx.moveTo(cx - 30, cy + 20);
+    shapeCtx.lineTo(cx + 20, cy + 20);
+    shapeCtx.lineTo(cx + 10, cy - 20);
+    shapeCtx.lineTo(cx - 30, cy - 20);
+    shapeCtx.closePath();
+  } else if (type === "scaleneTrapezoid") {
+    shapeCtx.moveTo(cx - 30, cy + 20);
+    shapeCtx.lineTo(cx + 25, cy + 20);
+    shapeCtx.lineTo(cx + 5, cy - 20);
+    shapeCtx.lineTo(cx - 25, cy - 12);
+    shapeCtx.closePath();
   } else if (type === "trapezoide") {
     shapeCtx.moveTo(cx - 33, cy + 18);
     shapeCtx.lineTo(cx + 25, cy + 20);
@@ -858,14 +870,29 @@ function showScreen(id) {
   document.getElementById(id).classList.add("active");
 }
 
+function getInteriorAngleSum(shapeKey, sides) {
+  if (shapeKey === "star") return "540°";
+  if (["circle", "oval", "crescent", "heart", "semicircle"].includes(shapeKey)) return "No aplica";
+  if (typeof sides === "number" && sides >= 3) return `${180 * (sides - 2)}°`;
+  return "No aplica";
+}
+
+function getDiagonalCount(shapeKey, sides) {
+  if (shapeKey === "star") return "No aplica";
+  if (["circle", "oval", "crescent", "heart", "semicircle"].includes(shapeKey)) return "No aplica";
+  if (typeof sides === "number" && sides >= 4) return (sides * (sides - 3)) / 2;
+  if (typeof sides === "number" && sides === 3) return 0;
+  return "No aplica";
+}
+
 function getShapeStudyInfo(shapeKey) {
   const info = {
     triangle: {
       sides: 3,
       vertices: 3,
       diagonals: 0,
-      angle: "3 ángulos (suman 180°)",
-      detail: "Triángulo con 3 ángulos internos cuya suma es 180°."
+      angle: "3 ángulos internos que suman 180°",
+      detail: "Triángulo equilátero: todos sus lados son iguales, por lo tanto todos sus ángulos miden 60° cada uno."
     },
     square: {
       sides: 4,
@@ -1009,8 +1036,8 @@ function getShapeStudyInfo(shapeKey) {
     star: {
       sides: 10,
       vertices: 10,
-      diagonals: "No aplica",
-      angle: "10 ángulos (5 exteriores y 5 interiores)",
+      diagonals: 35,
+      angle: "10",
       detail: "Estrella de 5 puntas con 10 vértices alternos."
     },
     heart: {
@@ -1049,7 +1076,20 @@ function getShapeStudyInfo(shapeKey) {
       detail: "Trapecio isósceles con dos lados no paralelos iguales."
     }
   };
-  return info[shapeKey] || { sides: "?", vertices: "?", diagonals: "?", angle: "Ángulos según la figura.", detail: "Información general de la figura." };
+
+  const selectedInfo = info[shapeKey] || {
+    sides: "?",
+    vertices: "?",
+    diagonals: "?",
+    angle: "Ángulos según la figura.",
+    detail: "Información general de la figura."
+  };
+
+  return {
+    ...selectedInfo,
+    diagonals: selectedInfo.diagonals !== undefined ? selectedInfo.diagonals : getDiagonalCount(shapeKey, selectedInfo.sides),
+    sumAngles: getInteriorAngleSum(shapeKey, selectedInfo.sides)
+  };
 }
 
 function getStudyTopicsForShape(shapeKey) {
@@ -1073,10 +1113,10 @@ function renderStudyScreen() {
   studyShapeList.innerHTML = "";
   studyInfoBox.innerHTML = `
     <h3>Selecciona una figura</h3>
-    <p>Toca una tarjeta para ver los lados, vértices y datos importantes de esa figura.</p>
+    <p>Toca una tarjeta para ver los lados, vértices, ángulos, diagonales y la suma de ángulos internos de esa figura.</p>
   `;
   studySelectedShapeIndex = null;
-  if (studyStartBtn) studyStartBtn.disabled = true;
+  if (studyStartBtn) studyStartBtn.disabled = false;
 
   gameData.forEach((shape, index) => {
     const card = document.createElement("div");
@@ -1099,8 +1139,19 @@ function renderStudyScreen() {
   });
 }
 
+function startStudyBattle() {
+  startBackgroundMusic();
+  renderShapeOptions();
+  selectedShapes.clear();
+  if (typeof studySelectedShapeIndex === "number" && gameData[studySelectedShapeIndex]) {
+    selectedShapes.add(studySelectedShapeIndex);
+  }
+  setStartButtonState();
+  showScreen("map");
+}
+
 function showStudyDetail(shape) {
-  const { sides, vertices, diagonals, angle, detail } = getShapeStudyInfo(shape.shape);
+  const { sides, vertices, diagonals, angle, sumAngles, detail } = getShapeStudyInfo(shape.shape);
   const studyTopics = getStudyTopicsForShape(shape.shape);
   detailTitle.textContent = shape.name;
   studyDetailInfo.innerHTML = `
@@ -1109,7 +1160,8 @@ function showStudyDetail(shape) {
       <li><strong>Lados:</strong> ${sides}</li>
       <li><strong>Vértices:</strong> ${vertices}</li>
       <li><strong>Diagonales:</strong> ${diagonals}</li>
-      <li><strong>Ángulo:</strong> ${angle}</li>
+      <li><strong>Ángulos:</strong> ${angle}</li>
+      <li><strong>Suma de ángulos internos:</strong> ${sumAngles}</li>
       <li><strong>Temas del juego:</strong> ${studyTopics.join(", ")}</li>
       <li><strong>Detalle:</strong> ${detail}</li>
     </ul>
@@ -1575,7 +1627,10 @@ function beginBattle(shapeIndexes) {
 }
 
 function startBattle() {
-  if (selectedShapes.size === 0) return;
+  if (selectedShapes.size === 0) {
+    showScreen("map");
+    return;
+  }
   beginBattle(Array.from(selectedShapes));
 }
 
@@ -1604,6 +1659,15 @@ function start() {
   }
   setStartButtonState();
   showScreen("map");
+}
+
+function shuffleOptions(options) {
+  const shuffled = [...options];
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
 }
 
 function loadNextQuestion() {
@@ -1658,12 +1722,14 @@ function loadNextQuestion() {
 
   questionEl.textContent = currentQuestionObj.q;
 
+  const shuffledOptions = shuffleOptions(currentQuestionObj.a.map((option, index) => ({ option, index })));
+
   answersEl.innerHTML = "";
-  currentQuestionObj.a.forEach((option, idx) => {
+  shuffledOptions.forEach(({ option, index }) => {
     const btn = document.createElement("button");
     btn.className = "btn secondary";
     btn.textContent = option;
-    btn.addEventListener("click", () => checkAnswer(idx));
+    btn.addEventListener("click", () => checkAnswer(index));
     answersEl.appendChild(btn);
   });
 }
@@ -1850,25 +1916,12 @@ function animate() {
 
 document.getElementById("startBtn").addEventListener("click", start);
 document.getElementById("studyBtn").addEventListener("click", () => {
+  startBackgroundMusic();
   renderStudyScreen();
   showScreen("study");
 });
-document.getElementById("studyStartBtn").addEventListener("click", () => {
-  startBackgroundMusic();
-  if (studySelectedShapeIndex !== null) {
-    beginBattle([studySelectedShapeIndex]);
-  } else {
-    start();
-  }
-});
-document.getElementById("studyDetailStartBtn").addEventListener("click", () => {
-  startBackgroundMusic();
-  if (studySelectedShapeIndex !== null) {
-    beginBattle([studySelectedShapeIndex]);
-  } else {
-    start();
-  }
-});
+document.getElementById("studyStartBtn").addEventListener("click", startStudyBattle);
+document.getElementById("studyDetailStartBtn").addEventListener("click", startStudyBattle);
 document.getElementById("startBattleBtn").addEventListener("click", startBattle);
 document.getElementById("backToHomeBtn").addEventListener("click", () => showScreen("menu"));
 document.getElementById("retreatBtn").addEventListener("click", backToMap);
