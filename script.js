@@ -10,7 +10,7 @@ let bossMaxLife = MAX_LIFE;
 let currentQuestionObj = null;
 let currentQuestionObjIndex = null;
 let activeShapeIndexes = [];
-let usedQuestionKeys = new Set();
+let answeredCorrectlyKeys = new Set();
 let failedQuestionKeys = new Set();
 let wrongAnswers = 0;
 let correctStreak = 0;
@@ -1052,6 +1052,23 @@ function getShapeStudyInfo(shapeKey) {
   return info[shapeKey] || { sides: "?", vertices: "?", diagonals: "?", angle: "Ángulos según la figura.", detail: "Información general de la figura." };
 }
 
+function getStudyTopicsForShape(shapeKey) {
+  const shapeData = gameData.find((entry) => entry.shape === shapeKey);
+  if (!shapeData?.pool) return [];
+
+  const topicLabels = {
+    lados: "lados",
+    vertices: "vértices",
+    angulos: "ángulos",
+    diagonales: "diagonales",
+    simetria: "simetría",
+    formas: "formas",
+    polígonos: "polígonos"
+  };
+
+  return [...new Set(shapeData.pool.map((item) => item.topic).filter(Boolean))].map((topic) => topicLabels[topic] || topic);
+}
+
 function renderStudyScreen() {
   studyShapeList.innerHTML = "";
   studyInfoBox.innerHTML = `
@@ -1084,6 +1101,7 @@ function renderStudyScreen() {
 
 function showStudyDetail(shape) {
   const { sides, vertices, diagonals, angle, detail } = getShapeStudyInfo(shape.shape);
+  const studyTopics = getStudyTopicsForShape(shape.shape);
   detailTitle.textContent = shape.name;
   studyDetailInfo.innerHTML = `
     <h3>${shape.name}</h3>
@@ -1092,6 +1110,7 @@ function showStudyDetail(shape) {
       <li><strong>Vértices:</strong> ${vertices}</li>
       <li><strong>Diagonales:</strong> ${diagonals}</li>
       <li><strong>Ángulo:</strong> ${angle}</li>
+      <li><strong>Temas del juego:</strong> ${studyTopics.join(", ")}</li>
       <li><strong>Detalle:</strong> ${detail}</li>
     </ul>
   `;
@@ -1536,7 +1555,7 @@ function beginBattle(shapeIndexes) {
   player.life = player.maxLife;
   heroInjured = 0;
   alienInjured = 0;
-  usedQuestionKeys = new Set();
+  answeredCorrectlyKeys = new Set();
   failedQuestionKeys.clear();
   wrongAnswers = 0;
   battleLocked = false;
@@ -1582,31 +1601,35 @@ function start() {
 
 function loadNextQuestion() {
   const combinedPool = getCombinedPool();
-  let poolItems = combinedPool;
+  const currentQuestionKey = currentQuestionObj ? `${currentPlanetIndex}-${currentQuestionObjIndex}` : null;
 
-  if (wrongAnswers >= 10 && failedQuestionKeys.size > 0) {
-    poolItems = combinedPool.filter((item) => failedQuestionKeys.has(`${item.shapeIndex}-${item.questionIndex}`));
-    statusMessageEl.textContent = "Modo repite falladas: responde las preguntas que fallaste y vence al enemigo.";
+  const retryPoolItems = combinedPool.filter((item) => {
+    const key = `${item.shapeIndex}-${item.questionIndex}`;
+    return failedQuestionKeys.has(key) && key !== currentQuestionKey;
+  });
+
+  let poolItems = retryPoolItems;
+  let message = "";
+
+  if (poolItems.length === 0) {
+    poolItems = combinedPool.filter((item) => {
+      const key = `${item.shapeIndex}-${item.questionIndex}`;
+      return !answeredCorrectlyKeys.has(key) && !failedQuestionKeys.has(key) && key !== currentQuestionKey;
+    });
   } else {
-    statusMessageEl.textContent = "";
+    message = "Repitiendo preguntas que fallaste.";
   }
 
   if (poolItems.length === 0) {
-    poolItems = combinedPool;
+    statusMessageEl.textContent = "¡No hay más preguntas disponibles para esta batalla!";
+    return;
   }
 
-  if (usedQuestionKeys.size >= poolItems.length) {
-    usedQuestionKeys.clear();
-  }
+  statusMessageEl.textContent = message;
 
-  let nextItem = poolItems[Math.floor(Math.random() * poolItems.length)];
-  let nextKey = `${nextItem.shapeIndex}-${nextItem.questionIndex}`;
-  while (usedQuestionKeys.has(nextKey)) {
-    nextItem = poolItems[Math.floor(Math.random() * poolItems.length)];
-    nextKey = `${nextItem.shapeIndex}-${nextItem.questionIndex}`;
-  }
+  const nextItem = poolItems[Math.floor(Math.random() * poolItems.length)];
+  const nextKey = `${nextItem.shapeIndex}-${nextItem.questionIndex}`;
 
-  usedQuestionKeys.add(nextKey);
   currentPlanetIndex = nextItem.shapeIndex;
   currentQuestionObjIndex = nextItem.questionIndex;
   currentQuestionObj = nextItem.question;
@@ -1639,7 +1662,9 @@ function checkAnswer(chosenIndex) {
       player.score += 10;
       correctStreak += 1;
       setInjury("alien");
-      failedQuestionKeys.delete(`${currentPlanetIndex}-${currentQuestionObjIndex}`);
+      const questionKey = `${currentPlanetIndex}-${currentQuestionObjIndex}`;
+      answeredCorrectlyKeys.add(questionKey);
+      failedQuestionKeys.delete(questionKey);
       statusMessageEl.textContent = `¡Correcto! +10 puntos`;
       updateHud();
       save();
@@ -1659,7 +1684,9 @@ function checkAnswer(chosenIndex) {
       setInjury("hero");
       correctStreak = 0;
       wrongAnswers += 1;
-      failedQuestionKeys.add(`${currentPlanetIndex}-${currentQuestionObjIndex}`);
+      const questionKey = `${currentPlanetIndex}-${currentQuestionObjIndex}`;
+      answeredCorrectlyKeys.delete(questionKey);
+      failedQuestionKeys.add(questionKey);
       statusMessageEl.textContent = `¡Fallaste! +1 X`;
       updateHud();
       save();

@@ -113,6 +113,27 @@ body {
   line-height: 1.75;
 }
 
+.study-guide {
+  max-width: 640px;
+  margin: 0 auto 1.5rem;
+  padding: 1rem 1.2rem;
+  border-radius: 18px;
+  background: rgba(34, 211, 238, 0.09);
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  text-align: left;
+}
+
+.study-guide h3 {
+  margin-bottom: 0.7rem;
+  color: var(--text);
+}
+
+.study-guide ul {
+  padding-left: 1.2rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
 .study-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
