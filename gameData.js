@@ -16,10 +16,9 @@ window.gameData = [
     shape: "square",
     pool: [
       { q: "¿Cuántos lados iguales tiene un cuadrado?", a: ["2", "3", "4", "Ninguno"], c: 2, topic: "lados" },
-      { q: "¿Cuántas diagonales tiene un cuadrado?", a: ["1", "2", "3", "4"], c: 1, topic: "diagonales" },
       { q: "¿Los lados de un cuadrado son...", a: ["Todos iguales", "Perpendiculares", "Curvos", "Diferentes"], c: 0, topic: "lados" },
       { q: "¿Cuánto mide cada ángulo interno de un cuadrado?", a: ["60°", "90°", "120°", "45°"], c: 1, topic: "angulos" },
-      { q: "¿Cuántos ejes de simetría tiene un cuadrado?", a: ["2", "3", "4", "5"], c: 2, topic: "simetria" },
+      { q: "¿Cuántas diagonales tiene un cuadrado?", a: ["1", "2", "3", "4"], c: 1, topic: "diagonales" },
       { q: "¿Cuántos pares de lados paralelos tiene un cuadrado?", a: ["1", "2", "3", "4"], c: 1, topic: "lados" }
     ]
   },
@@ -63,7 +62,6 @@ window.gameData = [
     pool: [
       { q: "¿Cuántos lados paralelos tiene un trapecio?", a: ["0", "1", "2", "3"], c: 1, topic: "lados" },
       { q: "¿Cuántos vértices tiene un trapecio?", a: ["3", "4", "5", "6"], c: 1, topic: "vertices" },
-      { q: "¿Qué define mejor a un trapecio?", a: ["Un par de lados paralelos", "Lados iguales", "Lados curvos", "Ángulos rectos"], c: 0, topic: "formas" },
       { q: "¿Cuántos ángulos tiene un trapecio?", a: ["3", "4", "5", "6"], c: 1, topic: "angulos" },
       { q: "¿Cuántos pares de lados paralelos tiene un trapecio?", a: ["0", "1", "2", "3"], c: 1, topic: "lados" },
       { q: "¿Cuántos lados tiene un trapecio?", a: ["3", "4", "5", "6"], c: 1, topic: "lados" }
@@ -177,9 +175,7 @@ window.gameData = [
     shape: "circle",
     pool: [
       { q: "¿Cuántos vértices tiene un círculo?", a: ["0", "1", "2", "Infinitos"], c: 0, topic: "vertices" },
-      { q: "¿Cuántos lados curvos tiene un círculo?", a: ["0", "1", "2", "Infinitos"], c: 1, topic: "formas" },
-      { q: "¿Cuántos ángulos interiores tiene un círculo?", a: ["0", "1", "2", "Infinitos"], c: 0, topic: "angulos" },
-      { q: "¿Qué elemento se encuentra en el centro de un círculo?", a: ["Radio", "Diámetro", "Centro", "Arco"], c: 2, topic: "formas" }
+      { q: "¿Cuántos ángulos interiores tiene un círculo?", a: ["0", "1", "2", "Infinitos"], c: 0, topic: "angulos" }
     ]
   },
   {
@@ -187,7 +183,6 @@ window.gameData = [
     shape: "oval",
     pool: [
       { q: "¿Cuántos vértices tiene un óvalo?", a: ["0", "1", "2", "4"], c: 0, topic: "vertices" },
-      { q: "¿Cuántos lados curvos tiene un óvalo?", a: ["0", "1", "2", "3"], c: 1, topic: "formas" },
       { q: "¿Cuántos ángulos interiores tiene un óvalo?", a: ["0", "1", "2", "Infinitos"], c: 0, topic: "angulos" }
     ]
   },
@@ -196,7 +191,6 @@ window.gameData = [
     shape: "crescent",
     pool: [
       { q: "¿Cuántos vértices tiene una media luna?", a: ["0", "1", "2", "3"], c: 0, topic: "vertices" },
-      { q: "¿Cuántos lados curvos tiene una media luna?", a: ["1", "2", "3", "4"], c: 1, topic: "formas" },
       { q: "¿Cuántos ángulos interiores tiene una media luna?", a: ["0", "1", "2", "3"], c: 0, topic: "angulos" }
     ]
   },
@@ -206,17 +200,14 @@ window.gameData = [
     pool: [
       { q: "¿Cuántos vértices tiene una estrella de 5 puntas?", a: ["5", "8", "10", "12"], c: 2, topic: "vertices" },
       { q: "¿Cuántos lados tiene una estrella de 5 puntas?", a: ["5", "8", "10", "12"], c: 2, topic: "lados" },
-      { q: "¿Cuántos ángulos tiene una estrella de 5 puntas?", a: ["5", "8", "10", "12"], c: 2, topic: "angulos" },
-      { q: "¿Cuántas puntas tiene una estrella de cinco puntas?", a: ["4", "5", "6", "10"], c: 1, topic: "formas" }
+      { q: "¿Cuántos ángulos tiene una estrella de 5 puntas?", a: ["5", "8", "10", "12"], c: 2, topic: "angulos" }
     ]
   },
   {
     name: "Corazón",
     shape: "heart",
     pool: [
-      { q: "¿Cuántos vértices tiene un corazón estilizado?", a: ["0", "1", "2", "3"], c: 1, topic: "vertices" },
-      { q: "¿Cuántos lados curvos tiene un corazón?", a: ["1", "2", "3", "4"], c: 1, topic: "formas" },
-      { q: "¿Qué característica geométrica describe mejor un corazón estilizado?", a: ["Simétrica", "Rectangular", "Circular", "Triangular"], c: 0, topic: "formas" }
+      { q: "¿Cuántos vértices tiene un corazón estilizado?", a: ["0", "1", "2", "3"], c: 1, topic: "vertices" }
     ]
   },
   {
@@ -224,7 +215,6 @@ window.gameData = [
     shape: "semicircle",
     pool: [
       { q: "¿Cuántos vértices tiene un semicírculo?", a: ["0", "1", "2", "3"], c: 2, topic: "vertices" },
-      { q: "¿Cuántos lados rectos tiene un semicírculo?", a: ["0", "1", "2", "3"], c: 1, topic: "formas" },
       { q: "¿Cuántos ángulos interiores tiene un semicírculo?", a: ["0", "1", "2", "3"], c: 0, topic: "angulos" }
     ]
   },
@@ -252,11 +242,7 @@ window.gameData = [
     shape: "isoscelesTrapezoid",
     pool: [
       { q: "¿Cuántos lados paralelos tiene un trapecio isósceles?", a: ["0", "1", "2", "3"], c: 1, topic: "lados" },
-      { q: "En un trapecio isósceles, los lados no paralelos son...", a: ["Iguales", "Diferentes", "Perpendiculares", "Curvos"], c: 0, topic: "formas" },
-      { q: "¿Cuántos pares de ángulos iguales tiene un trapecio isósceles?", a: ["1", "2", "3", "0"], c: 1, topic: "angulos" },
-      { q: "¿Qué polígono tiene 10 lados?", a: ["Nonágono", "Decágono", "Endecágono", "Dodecágono"], c: 1, topic: "polígonos" },
-      { q: "¿Qué figura no tiene vértices?", a: ["Cuadrado", "Pentágono", "Círculo", "Triángulo"], c: 2, topic: "formas" },
-      { q: "¿Qué figura tiene 12 lados?", a: ["Decágono", "Endecágono", "Dodecágono", "Nonágono"], c: 2, topic: "polígonos" }
+      { q: "¿Cuántos pares de ángulos iguales tiene un trapecio isósceles?", a: ["1", "2", "3", "0"], c: 1, topic: "angulos" }
     ]
   }
 ];

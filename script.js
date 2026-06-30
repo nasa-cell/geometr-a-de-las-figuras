@@ -1536,10 +1536,13 @@ function setStartButtonState() {
 }
 
 function getCombinedPool() {
+  const allowedTopics = new Set(["lados", "vertices", "angulos", "diagonales"]);
   const pool = [];
   activeShapeIndexes.forEach((shapeIndex) => {
     gameData[shapeIndex].pool.forEach((question, questionIndex) => {
-      pool.push({ shapeIndex, questionIndex, question });
+      if (allowedTopics.has(question.topic)) {
+        pool.push({ shapeIndex, questionIndex, question });
+      }
     });
   });
   return pool;
@@ -1554,11 +1557,14 @@ function beginBattle(shapeIndexes) {
   bossMaxLife = totalQuestions > 0 ? totalQuestions * DAMAGE : DAMAGE;
   bossLife = bossMaxLife;
   player.life = player.maxLife;
+  player.score = 0;
+  player.xCount = 0;
   heroInjured = 0;
   alienInjured = 0;
   answeredCorrectlyKeys = new Set();
   failedQuestionKeys.clear();
   wrongAnswers = 0;
+  correctStreak = 0;
   battleLocked = false;
   clearCombatIntervals();
   planetNameEl.textContent = gameData[currentPlanetIndex].name;
@@ -1671,9 +1677,15 @@ function checkAnswer(chosenIndex) {
       save();
 
       if (bossLife <= 0) {
+        const finalScore = player.score;
+        const finalErrors = wrongAnswers;
+        player.score = 0;
+        player.xCount = 0;
+        wrongAnswers = 0;
+        correctStreak = 0;
         updateHud();
         save();
-        showVictory();
+        showVictory(finalScore, finalErrors);
       } else {
         loadNextQuestion();
       }
@@ -1693,11 +1705,17 @@ function checkAnswer(chosenIndex) {
       save();
 
       if (player.life <= 0) {
+        const finalScore = player.score;
+        const finalErrors = player.xCount;
+        player.score = 0;
+        player.xCount = 0;
+        wrongAnswers = 0;
+        correctStreak = 0;
         player.maxLife = MAX_LIFE;
         player.life = MAX_LIFE;
         player.level = 1;
         save();
-        showGameOver();
+        showGameOver(finalScore, finalErrors);
       } else {
         loadNextQuestion();
       }
@@ -1752,17 +1770,17 @@ function drawStars(ctx) {
 
 let stars = [];
 
-function showGameOver() {
-  document.getElementById("finalScore").textContent = player.score;
-  document.getElementById("finalX").textContent = player.xCount;
+function showGameOver(finalScore = player.score, finalErrors = player.xCount) {
+  document.getElementById("finalScore").textContent = finalScore;
+  document.getElementById("finalX").textContent = finalErrors;
   document.getElementById("gameOverModal").classList.add("visible");
 }
 
-function showVictory() {
+function showVictory(finalScore = player.score, finalErrors = wrongAnswers) {
   document.getElementById("victoryModal").classList.add("visible");
   document.getElementById("statusMessage").textContent = "¡Victoria! Has derrotado al enemigo.";
-  document.getElementById("victoryScore").textContent = player.score;
-  document.getElementById("victoryErrors").textContent = wrongAnswers;
+  document.getElementById("victoryScore").textContent = finalScore;
+  document.getElementById("victoryErrors").textContent = finalErrors;
   createConfetti();
   playVictorySound();
 }
