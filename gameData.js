@@ -6,6 +6,7 @@ window.gameData = [
       { q: "¿Cuántos lados tiene un triángulo?", a: ["2", "3", "4", "5"], c: 1, topic: "lados" },
       { q: "¿Cuántos vértices tiene un triángulo?", a: ["2", "3", "4", "5"], c: 1, topic: "vertices" },
       { q: "¿Cuántos ángulos tiene un triángulo?", a: ["2", "3", "4", "5"], c: 1, topic: "angulos" },
+      { q: "¿Cuánto mide cada ángulo interno de un triángulo equilátero?", a: ["60°", "90°", "120°", "45°"], c: 0, topic: "angulos" },
       { q: "¿Cuántas diagonales tiene un triángulo?", a: ["0", "1", "2", "3"], c: 0, topic: "diagonales" },
       { q: "¿Cuánto suman los ángulos internos de un triángulo?", a: ["90°", "180°", "360°", "120°"], c: 1, topic: "angulos" }
     ]
@@ -17,6 +18,7 @@ window.gameData = [
       { q: "¿Cuántos lados tiene un cuadrado?", a: ["2", "3", "4", "5"], c: 2, topic: "lados" },
       { q: "¿Cuántos vértices tiene un cuadrado?", a: ["2", "3", "4", "5"], c: 2, topic: "vertices" },
       { q: "¿Cuántos ángulos tiene un cuadrado?", a: ["2", "3", "4", "5"], c: 2, topic: "angulos" },
+      { q: "¿Cuánto mide cada ángulo interno de un cuadrado?", a: ["60°", "90°", "120°", "45°"], c: 1, topic: "angulos" },
       { q: "¿Cuántas diagonales tiene un cuadrado?", a: ["1", "2", "3", "4"], c: 1, topic: "diagonales" },
       { q: "¿Cuánto mide cada ángulo interno de un cuadrado?", a: ["60°", "90°", "120°", "45°"], c: 1, topic: "angulos" }
     ]
@@ -28,6 +30,7 @@ window.gameData = [
       { q: "¿Cuántos lados tiene un rectángulo?", a: ["2", "3", "4", "5"], c: 2, topic: "lados" },
       { q: "¿Cuántos vértices tiene un rectángulo?", a: ["2", "3", "4", "5"], c: 2, topic: "vertices" },
       { q: "¿Cuántos ángulos tiene un rectángulo?", a: ["2", "3", "4", "5"], c: 2, topic: "angulos" },
+      { q: "¿Cuánto mide cada ángulo interno de un rectángulo?", a: ["60°", "90°", "120°", "45°"], c: 1, topic: "angulos" },
       { q: "¿Cuántas diagonales tiene un rectángulo?", a: ["1", "2", "3", "4"], c: 1, topic: "diagonales" },
       { q: "¿Cuánto suman los ángulos internos de un rectángulo?", a: ["180°", "270°", "360°", "450°"], c: 2, topic: "angulos" }
     ]
@@ -39,6 +42,7 @@ window.gameData = [
       { q: "¿Cuántos lados tiene un rombo?", a: ["2", "3", "4", "5"], c: 2, topic: "lados" },
       { q: "¿Cuántos vértices tiene un rombo?", a: ["3", "4", "5", "6"], c: 1, topic: "vertices" },
       { q: "¿Cuántos ángulos tiene un rombo?", a: ["3", "4", "5", "6"], c: 1, topic: "angulos" },
+      { q: "¿Cuántos ángulos obtusos tiene un rombo?", a: ["0", "1", "2", "4"], c: 2, topic: "angulos" },
       { q: "¿Cuántas diagonales tiene un rombo?", a: ["1", "2", "3", "4"], c: 1, topic: "diagonales" },
       { q: "¿Cuánto suman los ángulos internos de un rombo?", a: ["180°", "270°", "360°", "450°"], c: 2, topic: "angulos" }
     ]
@@ -50,6 +54,7 @@ window.gameData = [
       { q: "¿Cuántos lados tiene un romboide?", a: ["2", "3", "4", "5"], c: 2, topic: "lados" },
       { q: "¿Cuántos vértices tiene un romboide?", a: ["3", "4", "5", "6"], c: 1, topic: "vertices" },
       { q: "¿Cuántos ángulos tiene un romboide?", a: ["3", "4", "5", "6"], c: 1, topic: "angulos" },
+      { q: "¿Cuántos ángulos agudos tiene un romboide?", a: ["0", "1", "2", "4"], c: 2, topic: "angulos" },
       { q: "¿Cuántas diagonales tiene un romboide?", a: ["1", "2", "3", "4"], c: 1, topic: "diagonales" },
       { q: "¿Cuánto suman los ángulos internos de un romboide?", a: ["180°", "270°", "360°", "450°"], c: 2, topic: "angulos" }
     ]
@@ -61,6 +66,7 @@ window.gameData = [
       { q: "¿Cuántos lados tiene un trapecio?", a: ["2", "3", "4", "5"], c: 2, topic: "lados" },
       { q: "¿Cuántos vértices tiene un trapecio?", a: ["3", "4", "5", "6"], c: 1, topic: "vertices" },
       { q: "¿Cuántos ángulos tiene un trapecio?", a: ["3", "4", "5", "6"], c: 1, topic: "angulos" },
+      { q: "¿Cuántos ángulos internos tiene un trapecio?", a: ["3", "4", "5", "6"], c: 1, topic: "angulos" },
       { q: "¿Cuántas diagonales tiene un trapecio?", a: ["1", "2", "3", "4"], c: 1, topic: "diagonales" },
       { q: "¿Cuánto suman los ángulos internos de un trapecio?", a: ["180°", "270°", "360°", "450°"], c: 2, topic: "angulos" }
     ]
@@ -105,6 +111,7 @@ window.gameData = [
       { q: "¿Cuántos lados tiene un pentágono?", a: ["4", "5", "6", "7"], c: 1, topic: "lados" },
       { q: "¿Cuántos vértices tiene un pentágono?", a: ["4", "5", "6", "7"], c: 1, topic: "vertices" },
       { q: "¿Cuántos ángulos tiene un pentágono?", a: ["4", "5", "6", "7"], c: 1, topic: "angulos" },
+      { q: "¿Cuánto mide cada ángulo interno de un pentágono regular?", a: ["90°", "108°", "120°", "135°"], c: 1, topic: "angulos" },
       { q: "¿Cuántas diagonales tiene un pentágono?", a: ["3", "4", "5", "6"], c: 2, topic: "diagonales" },
       { q: "¿Cuánto mide cada ángulo interno de un pentágono regular?", a: ["90°", "108°", "120°", "135°"], c: 1, topic: "angulos" }
     ]
@@ -116,6 +123,7 @@ window.gameData = [
       { q: "¿Cuántos lados tiene un hexágono?", a: ["5", "6", "7", "8"], c: 1, topic: "lados" },
       { q: "¿Cuántos vértices tiene un hexágono?", a: ["5", "6", "7", "8"], c: 1, topic: "vertices" },
       { q: "¿Cuántos ángulos tiene un hexágono?", a: ["5", "6", "7", "8"], c: 1, topic: "angulos" },
+      { q: "¿Cuánto mide cada ángulo interno de un hexágono regular?", a: ["108°", "120°", "135°", "140°"], c: 1, topic: "angulos" },
       { q: "¿Cuántas diagonales tiene un hexágono?", a: ["6", "8", "9", "12"], c: 2, topic: "diagonales" },
       { q: "¿Cuánto mide cada ángulo interno de un hexágono regular?", a: ["108°", "120°", "135°", "140°"], c: 1, topic: "angulos" }
     ]
