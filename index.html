@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🚀 Space Geometry</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="diseño-armas-y-trajes.css" />
+  </head>
+  <body>
+    <canvas id="stars"></canvas>
+    <div class="aurora aurora-1"></div>
+    <div class="aurora aurora-2"></div>
+
+    <div id="menu" class="screen active">
+      <div class="hero-panel">
+        <p class="eyebrow">Aprende geometría en modo batalla</p>
+        <h1>🚀 SPACE GEOMETRY</h1>
+        <h2>La batalla de los palitos</h2>
+        <p class="intro">
+          Responde preguntas de geometría, derrota enemigos y conquista cada planeta.
+        </p>
+        <div class="hero-actions">
+          <button id="startBtn" class="btn primary">Jugar</button>
+          <button id="studyBtn" class="btn secondary">Estudiar antes</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="study" class="screen">
+      <div class="hero-panel study-panel">
+        <p class="eyebrow">Repasa antes de jugar</p>
+        <h1>📚 Estudia las figuras</h1>
+        <p class="intro">
+          Aprende los conceptos clave: lados, vértices y ángulos. Revisa todas las figuras antes de entrar en la batalla.
+        </p>
+        <div class="study-summary">
+          <p><strong>Lados</strong> son los segmentos rectos que forman la figura.</p>
+          <p><strong>Vértices</strong> son los puntos donde se encuentran dos lados.</p>
+          <p><strong>Ángulos</strong> son la abertura entre dos lados.</p>
+          <p><strong>Diagonales</strong> son segmentos que unen vértices no adyacentes dentro de un polígono.</p>
+        </div>
+        <section class="study-grid" id="studyShapeList"></section>
+        <div id="studyInfoBox" class="study-info-box">
+          <h3>Selecciona una figura</h3>
+          <p>Toca una tarjeta para ver los lados, vértices y datos importantes de esa figura.</p>
+        </div>
+        <div class="actions study-actions">
+          <button id="backFromStudyBtn" class="btn secondary">Volver</button>
+          <button id="studyStartBtn" class="btn primary">Jugar ahora</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="studyDetail" class="screen">
+      <div class="hero-panel study-panel">
+        <p class="eyebrow">Detalle de figura</p>
+        <h1 id="detailTitle">Figura</h1>
+        <div class="study-detail-layout">
+          <div class="detail-left">
+            <div class="toggle-row">
+              <button id="showVerticesBtn" class="btn toggle">Mostrar vértices</button>
+              <button id="showSidesBtn" class="btn toggle">Mostrar lados</button>
+              <button id="showAnglesBtn" class="btn toggle">Mostrar ángulos</button>
+              <button id="showDiagonalsBtn" class="btn toggle">Mostrar diagonales</button>
+            </div>
+            <canvas id="studyDetailCanvas" width="320" height="320"></canvas>
+          </div>
+          <div id="studyDetailInfo" class="study-info-box"></div>
+        </div>
+        <div class="actions study-actions">
+          <button id="studyBackBtn" class="btn secondary">Volver al estudio</button>
+          <button id="studyDetailStartBtn" class="btn primary">Jugar ahora</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="map" class="screen">
+      <div class="top-bar">
+        <h1>🌌 Mundo geométrico</h1>
+      </div>
+
+      <div class="stats">
+        <div class="card">
+          <span class="label">❤️ Vida</span>
+          <span id="vida" class="value">50</span>
+        </div>
+        <div class="card">
+          <span class="label">🏆 Nivel</span>
+          <span id="level" class="value">1</span>
+        </div>
+      </div>
+
+      <section class="selection-panel">
+        <h2>Elige una figura</h2>
+        <div class="search-bar">
+          <div class="search-input">
+            <span class="search-icon">🔎</span>
+            <input id="shapeSearch" type="search" placeholder="Buscar figura..." aria-label="Buscar figura" />
+            <button id="shapeSearchClear" class="btn secondary small" aria-label="Limpiar búsqueda">✕</button>
+          </div>
+        </div>
+        <div class="planets" id="shapeGrid"></div>
+      </section>
+
+      <div class="actions">
+        <button id="backToHomeBtn" class="btn secondary">Volver al inicio</button>
+        <button id="startBattleBtn" class="btn primary" disabled>Comenzar batalla</button>
+      </div>
+    </div>
+
+    <div id="game" class="screen">
+      <h1 id="planetName">Planeta</h1>
+
+      <div class="combat-hud">
+        <div class="hud-bar">
+          <span>🧑‍🚀 Astronauta <span id="heroHpText">50</span>/50</span>
+          <div class="bar"><div class="fill" id="heroLifeBar"></div></div>
+        </div>
+        <div class="hud-bar">
+          <span>👾 Enemigo <span id="bossHpText">50</span></span>
+          <div class="bar"><div class="fill" id="boss"></div></div>
+        </div>
+      </div>
+
+      <div class="corner-stats">
+        <div class="corner-card">
+          <span class="label">❌ X</span>
+          <span id="xp" class="value">0</span>
+        </div>
+        <div class="corner-card">
+          <span class="label">🏅 Puntaje</span>
+          <span id="score" class="value">0</span>
+        </div>
+      </div>
+
+      <canvas id="combatStage" width="500" height="160"></canvas>
+      <div class="question-stage">
+        <div class="question" id="question"></div>
+        <canvas id="shapeCanvas" width="120" height="120"></canvas>
+      </div>
+      <div id="statusMessage" class="status-message"></div>
+      <div class="answers" id="answers"></div>
+      <div class="actions">
+        <button id="retreatBtn" class="btn danger">Retirada</button>
+      </div>
+    </div>
+
+    <div id="gameOverModal" class="game-over-modal">
+      <div class="game-over-card">
+        <h2>GAME OVER</h2>
+        <p>Terminaron los puntos de vida. Aquí está tu resultado:</p>
+        <div class="game-over-stats">
+          <div>
+            <span class="label">🏅 Puntaje</span>
+            <span id="finalScore" class="value">0</span>
+          </div>
+          <div>
+            <span class="label">❌ X</span>
+            <span id="finalX" class="value">0</span>
+          </div>
+        </div>
+        <button id="retryGameBtn" class="btn primary">Volver a jugar</button>
+      </div>
+    </div>
+
+    <div id="victoryModal" class="victory-modal">
+      <div class="victory-card">
+        <h2>¡Victoria!</h2>
+        <p>Has derrotado al enemigo. ¡Excelente trabajo en la misión espacial!</p>
+        <div class="victory-stats">
+          <div>
+            <span class="label">🏅 Puntaje conseguido</span>
+            <span id="victoryScore" class="value">0</span>
+          </div>
+          <div>
+            <span class="label">❌ Errores</span>
+            <span id="victoryErrors" class="value">0</span>
+          </div>
+        </div>
+        <button id="continueBtn" class="btn primary">Continuar</button>
+      </div>
+    </div>
+
+    <audio id="bgAudio" src="musica-de-fondo.mp3" loop preload="auto"></audio>
+    <script src="gameData.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
