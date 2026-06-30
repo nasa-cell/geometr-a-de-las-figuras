@@ -1621,15 +1621,28 @@ function loadNextQuestion() {
   if (poolItems.length === 0) {
     poolItems = combinedPool.filter((item) => {
       const key = `${item.shapeIndex}-${item.questionIndex}`;
-      return !answeredCorrectlyKeys.has(key) && !failedQuestionKeys.has(key) && key !== currentQuestionKey;
+      return !answeredCorrectlyKeys.has(key) && key !== currentQuestionKey;
     });
   } else {
     message = "Repitiendo preguntas que fallaste.";
   }
 
   if (poolItems.length === 0) {
-    statusMessageEl.textContent = "¡No hay más preguntas disponibles para esta batalla!";
-    return;
+    const fallbackItem = combinedPool.find((item) => {
+      const key = `${item.shapeIndex}-${item.questionIndex}`;
+      return key !== currentQuestionKey;
+    });
+
+    if (fallbackItem) {
+      poolItems = [fallbackItem];
+      message = "Reintentando una pregunta disponible.";
+    } else if (combinedPool.length > 0) {
+      poolItems = [combinedPool[0]];
+      message = "Reintentando la pregunta actual.";
+    } else {
+      statusMessageEl.textContent = "¡No hay más preguntas disponibles para esta batalla!";
+      return;
+    }
   }
 
   statusMessageEl.textContent = message;
